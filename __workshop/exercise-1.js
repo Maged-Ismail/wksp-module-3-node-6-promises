@@ -9,11 +9,35 @@
 //      Return them as `lat` and `lng` instead.
 
 // require the 'request-promise' module.
-
+const rp = require('request-promise');
 
 // Returns the current position of the ISS
 function getIssPosition() {
-
+    return rp('http://api.open-notify.org/iss-now.json')
+        .then((res)=>{
+            let data=JSON.parse(res);
+            // console.log(data);
+            return {
+                lat: data["iss_position"].latitude,
+                lng: data["iss_position"].longitude
+            }
+        })
 }
+getIssPosition().then(location => {
+    console.log(location);
+});
+
+module.exports = { getIssPosition, rp };
+
+
+// NOTE:
+// in order to see the result of the promise, you need to console.log
+// the data WITHIN the promise chain (in its own then)
+
+// You are 'returning' the value, beacause you will need this functionality
+// in another exercise.
+
+// If you console.log the the function call, you will not see the result as console.log
+// doesn't wait for the promise to be resolved to execute.
 
 // psst.... don't forget to call the function

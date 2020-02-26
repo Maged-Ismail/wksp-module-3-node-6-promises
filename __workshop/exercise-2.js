@@ -10,29 +10,30 @@
 // 4. Make sure to only return an object with lat/lng and not the whole response
 
 const opencage = require('opencage-api-client');
+require('dotenv').config();
+
+const NodeGeocoder = require('node-geocoder');
+
+let address = '1455 Boulevard de Maisonneuve O, Montréal, QC H3G 1M8';
+
+const geocoder = NodeGeocoder({
+    provider: 'opencage',
+    apiKey: 'a5f412c675154e1da12f64c6c178ce4b'
+});
+
+function getPosition(address) {
+    return geocoder.geocode(address)
+    .then ((res) => {
+        let location = {lat: res[0].latitude,
+                        lng: res[0].longitude};
+        return location;
+    })
+};
+
+getPosition(address).then(location => {
+    console.log(location);
+});
 
 
-function getAddressPosition(address) {
-    const requestObj = {
-        key: '1315122032774d06b34c570f3bd70f7b',
-        q: address
-    };
 
-    return opencage.geocode(requestObj)
-        .then(data => {
-            // if (data.status.code == 200) {
-                // if (data.results.length > 0) {
-                    const place = data.results[0];
-                    // console.log(place.geometry);
-                    return place;
-                // }
-            // } else {
-            //     // other possible response codes:
-            //     // https://opencagedata.com/api#codes
-            //     console.log('error', data.status.message);
-            // }
-        })
-        .catch(error => console.log('error', error.message));
-}
-
-console.log(getAddressPosition('1455 Boulevard de Maisonneuve O, Montréal, QC H3G 1M8'));
+module.exports = { geocoder, NodeGeocoder, getPosition };

@@ -11,10 +11,22 @@
 // or require them at the top of this file.
 // Remember to _export_ them from their file, if you plan on _requiring_ them.
 
+const { getCurrentTemperatureAtPosition, rp } = require(__dirname + '/exercise-3.js');
+const { geocoder, NodeGeocoder, getPosition } = require(__dirname + '/exercise-2.js');
 
-
-// Given an address as a string, returns the temperature
+// Given an address as a string, returns the temperature 
 // Use the getCurrentTemperatureAtPosition function
-function getCurrentTemperature(address) {
+let address = '1455 Boulevard de Maisonneuve O, Montréal, QC H3G 1M8';
 
-}
+
+const getCurrentTemperature = (address) => {
+        // return (getCurrentTemperatureAtPosition(getPosition(address).then))
+        getPosition(address)
+        .then(coord => {
+            getCurrentTemperatureAtPosition(coord)
+            .then (temp => {
+                
+            })
+        })
+
+};
